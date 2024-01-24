@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Company Management System - Stagiaires</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+
+
+</head>
+<body>
+<nav class="navbar navbar-expand py-3 sticky-top navbar-light bg-white">
+    <div class="container-fluid">
+      <a class="navbar-brand" th:href="@{/}">
+        <img class="logo ms-3" th:src="@{/img/logo.png}" alt="" style="width: 80px;">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="collapse navbar-collapse ms-auto" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/employees}">Employee management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/stagiaires}">Intern management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/aboutUs}">About Us</a>
+          </li>
+        </ul>
+        
+        <form th:action="@{/logout}" method="post">
+          <button class="btn btn-primary ms-lg-3" type="submit">Logout</button>
+        </form>
+      </div>
+    </div>
+  </nav><!-- //NAVBAR -->
+
+<div class="container mt-4">
+    <div class="row">
+        <h1>List Stagiaires</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <a th:href="@{/stagiaires/new}" class="btn btn-primary btn-sm mb-3">Add Stagiaire</a>
+        </div>
+    </div>
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+        <tr>
+            <th>Stagiaire First Name</th>
+            <th>Stagiaire Last Name</th>
+            <th>Stagiaire Email</th>
+            <th>Encadrer par</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="stagiaire : ${stagiaires}">
+            <td th:text="${stagiaire.firstName}"></td>
+            <td th:text="${stagiaire.lastName}"></td>
+            <td th:text="${stagiaire.email}"></td>
+            <td>
+                <span th:if="${stagiaire.encadrerPar != null}"
+                      th:text="${stagiaire.encadrerPar.firstName + ' ' + stagiaire.encadrerPar.lastName}">
+                </span>
+                <span th:unless="${stagiaire.encadrerPar != null}">Not Encadré</span>
+            </td>
+            <td>
+                <!-- Provide the correct URL path to navigate to a specific Stagiaire's details page -->
+                <a th:href="@{/stagiaires/edit/{id}(id=${stagiaire.id})}" class="btn btn-primary">Update</a>
+                <form th:action="@{/stagiaires/delete/{id}(id=${stagiaire.id})}" method="post" style="display: inline-block;">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Add the link to switch to the Employee Management page -->
+    <div class="text-center">
+        <a th:href="@{/employees}" class="btn btn-primary">Switch to Employee Management</a>
+    </div>
+</div>
+
+</body>
+</html>
